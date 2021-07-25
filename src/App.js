@@ -1,22 +1,19 @@
-function App() {
-  let user = {
-    name:"saran",
-    mark:95,
-    registerno:"19BME4109"
-  }
-  return (
-    <div>
-   <h1>Hello World</h1>
-   <div>
-     User Name is {user.name}<br/>
-     Register Number is {user.registerno}
-     <br/>
-     Marks scored : {user.mark}
-     <br/>
-     <input type="text"/>
-   </div>
-   </div>
-  );
-}
+import React from 'react';
+import {Route,Switch} from 'react-router-dom';
+import StudentLogin from './pages/studentLogin';
+import staffLogin from './pages/staffLogin';
+import studentPortal from './pages/studentPortal';
+import staffPortal from './pages/staffPortal';
 
+function App()
+{
+  return(
+  <Switch>
+    <Route exact path="/" component={StudentLogin}/>
+    <Route exact path="/faculty-login" component={staffLogin} />
+    <Route exact path="/faculty" component={staffPortal}/>
+    <Route exact path="/faculty/:tab" component={staffPortal}/>
+    <Route exact path="/student" component={studentPortal}/>
+  </Switch>);
+}
 export default App;
