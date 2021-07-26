@@ -18,6 +18,31 @@ export default function CardOnline(props)
         });
     }
 
+    function insertDataToForm()
+    {
+        let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
+        let attnId = props.data.attendance_id;
+        $.get("http://localhost:8080/api/attn/get?class_group="+classGroup+"&attn_id="+attnId,
+        (data,status)=>{
+                    if(status==="success")
+                    {
+                        document.getElementById("upd-atn-modal").style.display="block";
+                        document.getElementById("upd-attn-title").value=data[0].attendance_title;
+                        document.getElementById("upd-attn-desc").value=data[0].attendance_desc;
+                        document.getElementById("upd-attn-id").value=attnId;
+                        document.getElementById("upd-attn-date").value=data[0].date.replace(/\//g,'-');
+                        document.getElementById("upd-attn-strtm").value=data[0].start_time;
+                        document.getElementById("upd-attn-endtm").value=data[0].end_time;
+                        (data[0].type==="once")?document.getElementById("upd-attn-single").checked=true:document.getElementById("upd-attn-cont").checked=true;
+                        document.getElementById("upd-attn-rsltselect").value=data[0].result_log;
+                        document.getElementById("upd-attn-status").checked=(data[0].status==="true")?true:false;
+
+                    }
+        }).fail(()=>{
+            alert('Request Failed');
+        });
+    }
+
  return(
  <div className="col-md-5 col-sm-12 p-2 attendance-card card-online m-2">
                     <div className="row">
@@ -36,7 +61,7 @@ export default function CardOnline(props)
                     <br/>
                     <div className="sgs-right">
                         <button type="button" className="btn btn-success" style={{marginRight:"15px",marginBottom:"10px"}}><span className="material-icons small">view_list</span> View</button>
-                        <button type="button" className="btn btn-light hover:bg-gray-200" style={{marginRight:"15px",marginBottom:"10px"}}><span className="material-icons small">settings</span> Edit</button>
+                        <button type="button" onClick={()=>insertDataToForm()} className="btn btn-light hover:bg-gray-200" style={{marginRight:"15px",marginBottom:"10px"}}><span className="material-icons small">settings</span> Edit</button>
                         <button type="button" onClick={()=>changeStatusToFalse()} className="btn btn-danger" style={{marginRight:"15px",marginBottom:"10px"}}><i className="bx bx-x"></i> Stop</button>
                     </div>
                 </div>)
