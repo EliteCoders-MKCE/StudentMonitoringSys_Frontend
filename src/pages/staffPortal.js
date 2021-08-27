@@ -3,6 +3,9 @@ import {Switch,Route } from "react-router-dom";
 import Dashboard from "../components/dashboard";
 import StudentDetails from "../components/studentDetails";
 import UnderConstruction from "../components/underConstruction";
+import $ from 'jquery';
+import AttendanceLog from "../components/attendanceLog";
+
 
 export default function staffPortal()
 {
@@ -35,6 +38,12 @@ export default function staffPortal()
         }
         }
         linkColor.forEach(l=> l.addEventListener('click', colorLink))
+
+
+        $.get('http://localhost:8080/api/loginstaff/get-name?staff_id='+sessionStorage.getItem("staffId"),(data,status)=>{
+            if(status==="success")
+            sessionStorage.setItem('staffName',data);
+        });
         });
 
         function logout()
@@ -51,7 +60,7 @@ export default function staffPortal()
     </header>
     <div className="l-navbar" id="nav-bar">
         <nav className="nav">
-            <div> <a href="/faculty" className="nav_logo"> <i className='bx bx-layer nav_logo-icon'></i> <span className="nav_logo-name font-roboto">Faculty Portal</span> </a>
+            <div> <a href="/faculty" className="nav_logo"> <i className='bx bx-layer nav_logo-icon'></i> <span className="nav_logo-name font-roboto"><b>{sessionStorage.getItem('staffName')}</b></span> </a>
                 <div className="nav_list">
                      <Link to="/faculty" className="nav_link active"> <i className='bx bx-grid-alt nav_icon'></i> <span className="nav_name">Dashboard</span> </Link> 
                      <Link to="/faculty/student" className="nav_link"> <i className='bx bx-user nav_icon'></i> <span className="nav_name">Students</span> </Link>
@@ -66,7 +75,7 @@ export default function staffPortal()
       <Switch>
           <Route exact path="/faculty" component={Dashboard}></Route>
           <Route exact path="/faculty/student" component={StudentDetails}></Route>
-          <Route exact path="/faculty/log" component={UnderConstruction}></Route>
+          <Route exact path="/faculty/log" component={AttendanceLog}></Route>
           <Route exact path="/faculty/stats" component={UnderConstruction}></Route>
       </Switch>
     </div>

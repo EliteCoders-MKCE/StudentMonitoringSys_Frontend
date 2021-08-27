@@ -210,6 +210,18 @@ a {
 {
     margin-left: 2px !important;
 }
+.hide-onphone
+{
+    display: none;
+}
+.log-row
+{
+    border:2px solid green !important;
+}
+.dyn-margintop-log-row
+{
+    margin-top: 20px !important;
+}
 }
 /*END OF MINI SCREEN*/
 @media print {
@@ -417,4 +429,10 @@ a {
 .prof-aft-colon
 {
     margin-left: 15px;
+}
+.log-row
+{
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px dotted green;
 }
