@@ -14,6 +14,7 @@ function App()
     <Route exact path="/faculty" component={staffPortal}/>
     <Route exact path="/faculty/:tab" component={staffPortal}/>
     <Route exact path="/student" component={studentPortal}/>
+    <Route exact path="/student/:tab" component={studentPortal}/>
   </Switch>);
 }
 export default App;
