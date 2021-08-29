@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import settings from '../settings.json';
 
 export default function CardOffline(props)
 {
@@ -7,7 +8,7 @@ export default function CardOffline(props)
     {
         let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
         let attnId = props.data.attendance_id;
-        $.post("http://localhost:8080/api/attn/update-status?class_group="+classGroup+"&attn_id="+attnId+"&status=true",
+        $.post(settings.ip+"api/attn/update-status?class_group="+classGroup+"&attn_id="+attnId+"&status=true",
         (data,status)=>{
                     if(status==="success")
                     {
@@ -24,7 +25,7 @@ export default function CardOffline(props)
     {
         let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
         let attnId = props.data.attendance_id;
-        $.get("http://localhost:8080/api/attn/get?class_group="+classGroup+"&attn_id="+attnId,
+        $.get(settings.ip+"api/attn/get?class_group="+classGroup+"&attn_id="+attnId,
         (data,status)=>{
                     if(status==="success")
                     {
@@ -49,7 +50,7 @@ export default function CardOffline(props)
     {
         let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
         let attnId = props.data.attendance_id;
-        $.post("http://localhost:8080/api/attn/delete?class_group="+classGroup+"&attn_id="+attnId,
+        $.post(settings.ip+"api/attn/delete?class_group="+classGroup+"&attn_id="+attnId,
         (data,status)=>{
                     if(status==="success")
                     {
@@ -65,7 +66,7 @@ export default function CardOffline(props)
     {
         let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
         let attnId = props.data.attendance_id;
-        $.post("http://localhost:8080/api/attn/reset-save?class_group="+classGroup+"&attn_id="+attnId,
+        $.post(settings.ip+"api/attn/reset-save?class_group="+classGroup+"&attn_id="+attnId,
         (data,status)=>{
                     if(status==="success")
                     {

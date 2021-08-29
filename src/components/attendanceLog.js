@@ -1,14 +1,20 @@
 import $ from 'jquery';
 import { Component } from 'react';
+import settings from '../settings.json';
 
 function ListItem(props)
 {
+    function download(fileId)
+    {
+        let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
+        window.open(settings.ip+'api/attn/download?class_group='+classGroup+'&file_id='+fileId);
+    }
     return(
         <div style={{marginTop:"5px"}} >
         <div className="row sgs-center log-row dyn-margintop-log-row">
             <div className="col-md-4">{props.data.attendance_id}</div>
             <div className="col-md-4">{props.data.date_time}</div>
-            <div className="col-md-4"><button className="btn btn-primary bg-blue-500" style={{padding:"4px"}}><i className="material-icons small">cloud_download</i> Download</button></div>
+            <div className="col-md-4"><button className="btn btn-primary bg-blue-500" onClick={()=>download(props.data.date_time)} style={{padding:"4px"}}><i className="material-icons small">cloud_download</i> Download</button></div>
         </div>
         </div>
     )
@@ -21,7 +27,7 @@ class AttendanceLog extends Component
         super();
         this.state={data:null}
         let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
-        $.get('http://localhost:8080/api/attn/get-log?class_group='+classGroup,(data,status)=>{
+        $.get(settings.ip+'api/attn/get-log?class_group='+classGroup,(data,status)=>{
             if(status==="success")
                 this.setState({data:data});
             });

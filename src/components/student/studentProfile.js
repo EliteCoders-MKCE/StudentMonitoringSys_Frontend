@@ -1,12 +1,13 @@
 import profileImg from '../../assets/profile.png';
 import $ from 'jquery';
+import settings from '../../settings.json';
 
 export default function StudentProfile()
 {
     $( document ).ready(function() {
         let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
         let registerNo = sessionStorage.getItem('registerNo');
-        $.get('http://127.0.0.1:8080/api/student-details/get?class_group='+classGroup+'&register_no='+registerNo,(data,status)=>{
+        $.get(settings.ip+'api/student-details/get?class_group='+classGroup+'&register_no='+registerNo,(data,status)=>{
             document.getElementById("prof-reg").innerHTML=data[0].register_no;
             document.getElementById("prof-name").innerHTML=data[0].name.toUpperCase();
             document.getElementById("prof-gender").innerHTML=data[0].gender.toUpperCase();

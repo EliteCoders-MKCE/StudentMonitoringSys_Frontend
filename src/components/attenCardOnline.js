@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import settings from '../settings.json';
 
 export default function CardOnline(props)
 {
@@ -6,7 +7,7 @@ export default function CardOnline(props)
     {
         let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
         let attnId = props.data.attendance_id;
-        $.post("http://localhost:8080/api/attn/update-status?class_group="+classGroup+"&attn_id="+attnId+"&status=false",
+        $.post(settings.ip+"api/attn/update-status?class_group="+classGroup+"&attn_id="+attnId+"&status=false",
         (data,status)=>{
                     if(status==="success")
                     {
@@ -22,7 +23,7 @@ export default function CardOnline(props)
     {
         let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
         let attnId = props.data.attendance_id;
-        $.get("http://localhost:8080/api/attn/get?class_group="+classGroup+"&attn_id="+attnId,
+        $.get(settings.ip+"api/attn/get?class_group="+classGroup+"&attn_id="+attnId,
         (data,status)=>{
                     if(status==="success")
                     {

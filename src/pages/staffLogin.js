@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import $ from 'jquery';
 import '../assets/jquery.toaster';
+import settings from "../settings.json";
 
 function login()
 {
     let staffId = document.getElementById("log-staff-id").value;
     let staffPass = document.getElementById("staff-password").value;
-    $.post("http://localhost:8080/api/loginstaff/login?staff_id="+staffId+"&password="+staffPass,(data,status)=>{
+    $.post(settings.ip+"api/loginstaff/login?staff_id="+staffId+"&password="+staffPass,(data,status)=>{
         //console.log(data,status);
         if(data.loginStatus==="true")
         {

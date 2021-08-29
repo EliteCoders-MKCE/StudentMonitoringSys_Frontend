@@ -2,6 +2,7 @@ import { Component } from "react";
 import CardOnline from './attenCardOnline';
 import CardOffline from "./attenCardOffline";
 import $ from 'jquery';
+import settings from "../settings.json";
 
 function ModalUpdateAttn()
 {   
@@ -33,7 +34,7 @@ function ModalUpdateAttn()
         }
        // console.log(data)
        let xhr = new XMLHttpRequest();
-        let url = "http://localhost:8080/api/attn/update";
+        let url = settings.ip+"api/attn/update";
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
@@ -130,7 +131,8 @@ function ModalAddNewAttn()
         }
         console.log(data)
         let xhr = new XMLHttpRequest();
-        let url = "http://localhost:8080/api/attn/new";
+        
+        let url = settings.ip+"api/attn/new";
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
@@ -195,12 +197,10 @@ class Dashboard extends Component{
         super();     
         this.state={data:null}
         let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
-        $.get("http://localhost:8080/api/attn/get-all?class_group="+classGroup,(data,status)=>{
+        $.get(settings.ip+"api/attn/get-all?class_group="+classGroup,(data,status)=>{
             if(status==="success")
             this.setState({data:data});
         });
-
-
     }
 
     render()

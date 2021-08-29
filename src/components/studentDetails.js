@@ -5,6 +5,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import 'datatables.net-buttons/js/dataTables.buttons';
 import 'datatables.net-buttons/js/buttons.html5';
+import settings from '../settings.json';
 
 
 export default function StudentDetails()
@@ -26,7 +27,7 @@ export default function StudentDetails()
         ]
       } );
       let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
-      $.get("http://localhost:8080/api/student-details/get-all/?class_group="+classGroup,(data,status)=>{
+      $.get(settings.ip+"api/student-details/get-all/?class_group="+classGroup,(data,status)=>{
       if(status==="success")
       {
         for(let i=0;i<data.length;i++)

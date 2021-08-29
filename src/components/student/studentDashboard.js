@@ -4,6 +4,7 @@ import StdCardOnline from "./stdAttnDone";
 import StdCardOffline from "./stdAttnNotDone";
 import mkce from '../../assets/MKCE_Logo_SGS.png';
 import '../../assets/jquery.toaster';
+import settings from '../../settings.json';
 
 require('@tensorflow/tfjs-core')
 require('@tensorflow/tfjs-converter')
@@ -23,7 +24,7 @@ function ModalOpenAttnOnce()
             let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
             let registerNo = sessionStorage.getItem('registerNo');
             let attendnceId = sessionStorage.getItem('attnId');
-            $.get('http://localhost:8080/api/attn/give-attendance?class_group='+classGroup+'&register_no='+registerNo+'&attendance_id='+attendnceId,(data,status)=>{
+            $.get(settings.ip+'api/attn/give-attendance?class_group='+classGroup+'&register_no='+registerNo+'&attendance_id='+attendnceId,(data,status)=>{
             if(status==="success")    
                $.toaster(data,'','success');
             });
@@ -192,7 +193,7 @@ class StudentDashboard extends Component{
         this.state={data:null}
         let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
         let registerNo = sessionStorage.getItem('registerNo');
-        $.get("http://localhost:8080/api/attn/get-enabled?class_group="+classGroup+"&register_no="+registerNo,(data,status)=>{
+        $.get(settings.ip+"api/attn/get-enabled?class_group="+classGroup+"&register_no="+registerNo,(data,status)=>{
             if(status==="success")
             this.setState({data:data});
             //console.log(this.state);

@@ -5,6 +5,7 @@ import StudentDetails from "../components/studentDetails";
 import UnderConstruction from "../components/underConstruction";
 import $ from 'jquery';
 import AttendanceLog from "../components/attendanceLog";
+import settings from "../settings.json";
 
 
 export default function staffPortal()
@@ -40,7 +41,7 @@ export default function staffPortal()
         linkColor.forEach(l=> l.addEventListener('click', colorLink))
 
 
-        $.get('http://localhost:8080/api/loginstaff/get-name?staff_id='+sessionStorage.getItem("staffId"),(data,status)=>{
+        $.get(settings.ip+'api/loginstaff/get-name?staff_id='+sessionStorage.getItem("staffId"),(data,status)=>{
             if(status==="success")
             sessionStorage.setItem('staffName',data);
         });
