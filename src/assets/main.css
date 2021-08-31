@@ -210,10 +210,7 @@ a {
 {
     margin-left: 2px !important;
 }
-.hide-onphone
-{
-    display: none;
-}
+.hide-onphone{display: none;}
 .log-row
 {
     border:2px solid green !important;
@@ -222,6 +219,17 @@ a {
 {
     margin-top: 20px !important;
 }
+.logout-btn{margin-bottom: 100px;}
+.give-topmargin{margin-top: 3px;}
+#author-tag{
+    position: fixed;
+    top: 0;right:0;
+    color: grey;
+    font-size: x-small;
+}
+#tag-heart{font-size:10px !important;}
+.chat-msg{width: 85% !important;}
+#chat-faculty{max-height: 70vh !important;}
 }
 /*END OF MINI SCREEN*/
 @media print {
@@ -268,6 +276,13 @@ a {
 
     .body-pd {
         padding-left: calc(var(--nav-width) + 188px)
+    }
+    .hide-onpc{display: none;}
+
+    #author-tag{
+        position: fixed;
+        bottom: 0;right:0;
+        color: gray;
     }
 }
 .dashboard-cont
@@ -435,4 +450,27 @@ a {
     padding: 10px;
     border-radius: 5px;
     border: 1px dotted green;
+}
+.login-input
+{
+    background-color: transparent;
+    outline: none;
+    border-bottom: 1px solid grey;
+    padding: 5px;
+    color: white;
+    width:80%
+}
+.chat-msg
+{
+    border: 2px solid;
+    width: 50%;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+#chat-msg-type option
+{
+background-color:black;
+width: 70%;
+color: turquoise;
 }

@@ -9,12 +9,31 @@ function ListItem(props)
         let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
         window.open(settings.ip+'api/attn/download?class_group='+classGroup+'&file_id='+fileId);
     }
+    function deleteLog(fileId)
+    {
+        let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
+        $.get(settings.ip+'api/attn/delete-log?class_group='+classGroup+'&file_id='+fileId,(data,status)=>{
+            if(status==="success")
+            {
+                $.toaster(data,'', 'success');
+                setTimeout(()=>{
+                    window.location.reload();
+                },800);
+            }
+                
+        }).fail(()=>{
+            $.toaster('Request Failed...','', 'danger');
+        });
+    }
     return(
         <div style={{marginTop:"5px"}} >
         <div className="row sgs-center log-row dyn-margintop-log-row">
             <div className="col-md-4">{props.data.attendance_id}</div>
             <div className="col-md-4">{props.data.date_time}</div>
-            <div className="col-md-4"><button className="btn btn-primary bg-blue-500" onClick={()=>download(props.data.date_time)} style={{padding:"4px"}}><i className="material-icons small">cloud_download</i> Download</button></div>
+            <div className="col-md-4">
+                <button className="btn btn-primary bg-blue-500" onClick={()=>download(props.data.date_time)} style={{padding:"4px"}}><i className="material-icons small">cloud_download</i> Download</button>
+                <button className="btn btn-danger bg-red-500 give-topmargin"onClick={()=>deleteLog(props.data.date_time)} style={{padding:"5px",marginLeft:"10px"}}><i className="material-icons small">delete</i> Delete</button>
+            </div>
         </div>
         </div>
     )

@@ -129,7 +129,7 @@ function ModalAddNewAttn()
             attendance_status : "false" ,
             staff_id : sessionStorage.getItem('staffId')         // dyn. fromo browser
         }
-        console.log(data)
+        //console.log(data)
         let xhr = new XMLHttpRequest();
         
         let url = settings.ip+"api/attn/new";

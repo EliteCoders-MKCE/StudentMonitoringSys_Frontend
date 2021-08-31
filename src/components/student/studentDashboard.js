@@ -27,6 +27,11 @@ function ModalOpenAttnOnce()
             $.get(settings.ip+'api/attn/give-attendance?class_group='+classGroup+'&register_no='+registerNo+'&attendance_id='+attendnceId,(data,status)=>{
             if(status==="success")    
                $.toaster(data,'','success');
+               setTimeout(()=>{
+                stopBothVideoAndAudio();
+                document.getElementById("once-atn-modal").style.display = "none";
+                window.location.reload();
+               },800);
             });
         }
         else if (count===0)
@@ -45,6 +50,7 @@ function ModalOpenAttnOnce()
         <div className="modal-container sgs-center">
             <span className="text-xl">Single Attendance</span><br/>
                 <div>
+                  <span style={{fontSize:"12px"}} className="hide-onpc text-gray-500">Use Landscape mode for better performance</span>
                 <div style={{color:"white",margin:"0 auto"}}>
       <div>
         <div >
@@ -183,7 +189,7 @@ function startEverythingOnceAttendance()
     intr =  setInterval(()=>{
         detectFaces();
       },200)
-    },5000);
+    },2000);
 }
 
 class StudentDashboard extends Component{
@@ -239,12 +245,12 @@ class StudentDashboard extends Component{
             let main = <div className="sgs-center text-green-400">
                 <img style={{margin:"0 auto"}} alt="mkce" className="mkce-logo-dash" src={mkce}/>
                 <br/>No attendance available at the moment...</div>;
-            console.log(this.state.data.length)
+            //console.log(this.state.data.length)
             if(this.state.data.length>0)
             {
                 main =  this.state.data.map((item,i)=>{
                    
-                    if(item.atn_status==="true")
+                    if(item.atn_status==="present")
                         return(<StdCardOnline key={i} data={item}/>)
                     else
                      return (<StdCardOffline key={i} data={item}/>)

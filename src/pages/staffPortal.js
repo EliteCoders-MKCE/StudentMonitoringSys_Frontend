@@ -6,6 +6,7 @@ import UnderConstruction from "../components/underConstruction";
 import $ from 'jquery';
 import AttendanceLog from "../components/attendanceLog";
 import settings from "../settings.json";
+import FacultyChat from "../components/facultychat";
 
 
 export default function staffPortal()
@@ -66,9 +67,11 @@ export default function staffPortal()
                      <Link to="/faculty" className="nav_link active"> <i className='bx bx-grid-alt nav_icon'></i> <span className="nav_name">Dashboard</span> </Link> 
                      <Link to="/faculty/student" className="nav_link"> <i className='bx bx-user nav_icon'></i> <span className="nav_name">Students</span> </Link>
                  {/*<Link to="/faculty" className="nav_link"> <i className='bx bx-bookmark nav_icon'></i> <span className="nav_name">Bookmark</span> </Link>*/}
+                 <Link to="/faculty/chat" className="nav_link"> <i className='bx bx-message-alt-detail nav_icon'></i> <span className="nav_name">NoticeBoard</span> </Link>
+                 <Link to="/faculty/stats" className="nav_link"> <i className='bx bx-bar-chart-alt-2 nav_icon'></i> <span className="nav_name">Stats</span> </Link>
                  <Link to="/faculty/log" className="nav_link"> <i className='bx bx-folder nav_icon'></i> <span className="nav_name">Files</span> </Link> 
-                 <Link to="/faculty/stats" className="nav_link"> <i className='bx bx-bar-chart-alt-2 nav_icon'></i> <span className="nav_name">Stats</span> </Link> </div>
-            </div> <button onClick={()=>{logout()}} className="nav_link"> <i className='bx bx-log-out nav_icon'></i> <span className="nav_name">Log Out</span> </button>
+                </div>
+            </div> <button onClick={()=>{logout()}} className="nav_link logout-btn"> <i className='bx bx-log-out nav_icon'></i> <span className="nav_name">Log Out</span> </button>
         </nav>
     </div>
    
@@ -78,6 +81,7 @@ export default function staffPortal()
           <Route exact path="/faculty/student" component={StudentDetails}></Route>
           <Route exact path="/faculty/log" component={AttendanceLog}></Route>
           <Route exact path="/faculty/stats" component={UnderConstruction}></Route>
+          <Route exact path="/faculty/chat" component={FacultyChat}></Route>
       </Switch>
     </div>
     </div>);

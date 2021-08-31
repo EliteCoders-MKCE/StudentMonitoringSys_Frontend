@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import {Switch,Route } from "react-router-dom";
+import NoticeBoard from "../components/student/noticeBoard";
 import StudentDashboard from "../components/student/studentDashboard";
 import StudentProfile from "../components/student/studentProfile";
 import UnderConstruction from "../components/underConstruction";
@@ -53,14 +54,14 @@ return(<div id="body-pd" className="bg-dark">
 </header>
 <div className="l-navbar" id="nav-bar">
     <nav className="nav">
-        <div> <a href="/student" className="nav_logo"> <i className='bx bx-layer nav_logo-icon'></i> <span className="nav_logo-name font-roboto">Faculty Portal</span> </a>
+        <div> <a href="/student" className="nav_logo"> <i className='bx bx-layer nav_logo-icon'></i> <span className="nav_logo-name font-roboto">Student Portal</span> </a>
             <div className="nav_list">
                  <Link to="/student" className="nav_link active"> <i className='bx bx-grid-alt nav_icon'></i> <span className="nav_name">Dashboard</span> </Link> 
                  <Link to="/student/me" className="nav_link"> <i className='bx bx-user nav_icon'></i> <span className="nav_name">Students</span> </Link>
              {/*<Link to="/faculty" className="nav_link"> <i className='bx bx-bookmark nav_icon'></i> <span className="nav_name">Bookmark</span> </Link>*/}
-             <Link to="/student/stat" className="nav_link"> <i className='bx bx-folder nav_icon'></i> <span className="nav_name">Files</span> </Link> 
+             <Link to="/student/notice" className="nav_link"> <i className='bx bx-message-alt-detail nav_icon'></i> <span className="nav_name">NoticeBoard</span> </Link> 
              <Link to="/student/stat" className="nav_link"> <i className='bx bx-bar-chart-alt-2 nav_icon'></i> <span className="nav_name">Stats</span> </Link> </div>
-        </div> <button onClick={()=>logout()} className="nav_link"> <i className='bx bx-log-out nav_icon'></i> <span className="nav_name">Log Out</span> </button>
+        </div> <button onClick={()=>logout()} className="nav_link logout-btn"> <i className='bx bx-log-out nav_icon'></i> <span className="nav_name">Log Out</span> </button>
     </nav>
 </div>
 
@@ -68,7 +69,7 @@ return(<div id="body-pd" className="bg-dark">
   <Switch>
       <Route exact path="/student" component={StudentDashboard}></Route>
       <Route exact path="/student/me" component={StudentProfile}></Route>
-      <Route exact path="/student/stat" component={UnderConstruction}></Route>
+      <Route exact path="/student/notice" component={NoticeBoard}></Route>
       <Route exact path="/student/stat" component={UnderConstruction}></Route>
   </Switch>
 </div>
