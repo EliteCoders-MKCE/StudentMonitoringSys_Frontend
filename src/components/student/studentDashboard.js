@@ -12,9 +12,14 @@ require('@tensorflow/tfjs-backend-webgl')
 const blazeface = require('@tensorflow-models/blazeface');
 
 let intr;
+let intr1;
+let intr2;
 let detectFaces;
+let cdetectFaces;
+let cstreameo;
 let streameo;
 let count = 0;
+let ccount=0;
 function ModalOpenAttnOnce()
 {   
     function giveAttendance()
@@ -76,29 +81,105 @@ function ModalOpenAttnOnce()
     );
 }
 
-/*function clrIntr()
-    {
-      clearInterval(intr);
-    }
-     
-    function strtIntr()
-    {
-      intr =  setInterval(()=>{
-        detectFaces();
-      },200)
-    }*/
+function ModalOpenAttnCont()
+{   
+    return(
+    <div id="cont-atn-modal" className="modal font-roboto">
+    <div className="modal-content">
+        <div className="modal-container sgs-center">
+            <span className="text-xl">Continuous Monitoring</span><br/>
+                <div>
+                  <span style={{fontSize:"12px"}} className="hide-onpc text-gray-500">Use Landscape mode for better performance</span>
+                <div style={{color:"white",margin:"0 auto"}}>
+      <div>
+        <div >
+          <br/>
+          <video id="cvideo" style={{display:"none"}} autoPlay></video>
+          <canvas id="ccanvas" width="600px" height="400px" style={{margin:"0 auto"}}></canvas><br/>
+        </div>
+      </div>
+         <span>Face count : <span id="cspan-count">{ccount}</span></span><br/>
+    </div>
+                </div>
+            </div><br/>
+            <div className="sgs-center">
+            <button id="close-cont-atn-modal"className="btn btn-danger">Exit</button>
+            </div>
+        </div> 
+    </div>
+    );
+}
 
+function countToContinuous()
+{
+  console.log('2mins interval faces-'+ccount)
+  let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
+  let registerNo = sessionStorage.getItem('registerNo');
+  let attendnceId = sessionStorage.getItem('attnId');
+  if(ccount>0)
+  {
+    $.get(settings.ip+"/api/attn/count-cont?class_group="+classGroup+"&attn_id="+attendnceId+"&register_no="+registerNo,(data,status)=>{
+      if(status==="success")
+      {
+        if(data==="continue")
+        {
+          //Continue..
+          console.log("cont - continue")
+        }
+        else if(data==="stop")
+        {
+          $.toaster("Attendance Ended and Submitted Successfully","","success")
+          setTimeout(()=>{
+            document.getElementById("cont-atn-modal").style.display="none";
+              stopBothVideoAndAudiocont();
+              window.location.reload();
+          },1500);
+        }
+      }
+    }).fail(()=>{
+      $.toaster("Attendance failed...","","danger");
+    });
+  }
+  else if(ccount===0)
+    $.toaster("No face detected","","warning");
+  
+  else
+  $.toaster("Attendance failed...","","danger");
+}
 
 function stopBothVideoAndAudio() {
+  try
+  {
+    clearInterval(intr);
+  let video  = document.getElementById("video");
+  for (const track of video.srcObject.getTracks()) {
+    track.stop();
+  }
+  video.srcObject = null;
+  streameo.getTracks().forEach(function(track) {
+      if (track.readyState === 'live') {
+          track.stop();
+      }
+  });
+  }
+  catch(Exception)
+  {
+    console.log("Exception at closing/stop video from webcam - once")
+  }
+  
+}
+
+function stopBothVideoAndAudiocont() {
     try
     {
-      clearInterval(intr);
-    let video  = document.getElementById("video");
+      clearInterval(intr1);
+      clearInterval(intr2);
+    let video  = document.getElementById("cvideo");
     for (const track of video.srcObject.getTracks()) {
       track.stop();
     }
     video.srcObject = null;
-    streameo.getTracks().forEach(function(track) {
+    cstreameo.getTracks().forEach(function(track) {
         if (track.readyState === 'live') {
             track.stop();
         }
@@ -106,7 +187,7 @@ function stopBothVideoAndAudio() {
     }
     catch(Exception)
     {
-      console.log("Exception at closing/stop video from webcam")
+      console.log("Exception at closing/stop video from webcam - cont")
     }
     
 }
@@ -149,8 +230,8 @@ function startEverythingOnceAttendance()
         
         // draw the rectangle enclosing the face
         ctx.beginPath();
-        ctx.lineWidth = "4";
-        ctx.strokeStyle = "blue";
+        ctx.lineWidth = "3";
+        ctx.strokeStyle = "green";
         // the last two arguments are width and height
         // since blazeface returned only the coordinates, 
         // we can find the width and height by subtracting them.
@@ -163,10 +244,10 @@ function startEverythingOnceAttendance()
         ctx.stroke();
         
         // drawing small rectangles for the face landmarks
-        ctx.fillStyle = "red";
+      /*  ctx.fillStyle = "red";
         pred.landmarks.forEach((landmark) => {
           ctx.fillRect(landmark[0], landmark[1], 5, 5);
-        });
+        });*/
         
       });
       }
@@ -192,6 +273,93 @@ function startEverythingOnceAttendance()
     },2000);
 }
 
+
+function startEverythingContAttendance()
+{
+
+  let video = document.getElementById("cvideo");
+  let model;
+  let canvas = document.getElementById("ccanvas");
+  let ctx = canvas.getContext("2d");
+
+  const setupCamera = () => {
+  navigator.mediaDevices
+      .getUserMedia({
+      audio: false,
+      video: { width: 600, height: 400 },
+      })
+      .then((stream) => {
+        cstreameo=stream;
+      // stream is a MediaStream object
+      video.srcObject = stream;
+      });
+  };
+
+      cdetectFaces = async () => {
+        let prediction;
+      try{
+         prediction = await model.estimateFaces(video, false);
+           // print the prediction
+     // console.log(prediction);
+      //console.log(prediction.length)
+      ccount=prediction.length;
+      document.getElementById("cspan-count").innerText=ccount;
+      // draw the video first
+      ctx.drawImage(video, 0, 0, 600, 400);
+
+      prediction.forEach((pred) => {
+        
+        // draw the rectangle enclosing the face
+        ctx.beginPath();
+        ctx.lineWidth = "3";
+        ctx.strokeStyle = "green";
+        // the last two arguments are width and height
+        // since blazeface returned only the coordinates, 
+        // we can find the width and height by subtracting them.
+        ctx.rect(
+          pred.topLeft[0],
+          pred.topLeft[1],
+          pred.bottomRight[0] - pred.topLeft[0],
+          pred.bottomRight[1] - pred.topLeft[1]
+        );
+        ctx.stroke();
+        
+        // drawing small rectangles for the face landmarks
+        /*ctx.fillStyle = "red";
+        pred.landmarks.forEach((landmark) => {
+          ctx.fillRect(landmark[0], landmark[1], 5, 5);
+        });*/
+        
+      });
+      }
+        catch(Exception)
+        {
+            console.log("Exception occured at face detection")
+        }
+    
+    };
+    
+
+  setupCamera();
+
+  video.addEventListener("loadeddata", async () => {
+      model = await blazeface.load();
+      cdetectFaces();
+    });
+
+    setTimeout(()=>{
+    intr1 =  setInterval(()=>{
+        cdetectFaces();
+      },200)
+    },2000);
+
+    setTimeout(()=>{
+      intr2 = setInterval(() => {
+        countToContinuous();
+      }, 120000);
+    },2500);
+}
+
 class StudentDashboard extends Component{
     constructor(props)
     {
@@ -213,13 +381,25 @@ class StudentDashboard extends Component{
         {
             $( document ).ready(function() {
                 var modal = document.getElementById("once-atn-modal");
-                var btn = document.getElementById("open-once-attn");
+                var btn = document.getElementsByClassName("open-once-attn")[0];
                 var span = document.getElementById("close-once-atn-modal");
                 if(btn)
                 {
                     btn.onclick = function() {
-                        startEverythingOnceAttendance();
-                        modal.style.display = "block";
+                      $.toaster("Please wait...",'','success');
+                      setTimeout(()=>{
+                          if(sessionStorage.getItem("atn_type")==="once")
+                        {
+                          startEverythingOnceAttendance();
+                          modal.style.display = "block";
+                        }
+                        else
+                        {
+                          startEverythingContAttendance();
+                          document.getElementById("cont-atn-modal").style.display="block";
+                        }
+                      },1000);
+                      
                         }
                         span.onclick = function() {
                         stopBothVideoAndAudio();
@@ -228,17 +408,18 @@ class StudentDashboard extends Component{
                 }
                 
 
-                //update
-               /* var umodal = document.getElementById("upd-atn-modal");
-                var uspan = document.getElementById("close-upd-atn-modal");
+                //continuous
+                var umodal = document.getElementById("cont-atn-modal");
+                var uspan = document.getElementById("close-cont-atn-modal");
                 uspan.onclick = function() {
+                stopBothVideoAndAudiocont();
                 umodal.style.display = "none";
-                }*/
+                }
                 window.onclick = function(event) {
                 if (event.target===modal) {
-                    stopBothVideoAndAudio();
+                    stopBothVideoAndAudiocont();
                     modal.style.display = "none";
-                    //umodal.style.display = "none";
+                    umodal.style.display = "none";
                 }
                 }
             });
@@ -260,6 +441,7 @@ class StudentDashboard extends Component{
         <div>
             <span className="text-2xl">Dashboard</span>
         </div>
+      {<ModalOpenAttnCont/>}
       {<ModalOpenAttnOnce/>}
         <br/>
         <div className="row font-roboto">

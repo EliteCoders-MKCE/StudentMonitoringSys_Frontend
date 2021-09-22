@@ -15,7 +15,6 @@ function ModalUpdateAttn()
         let startTime = document.getElementById("upd-attn-strtm").value;
         let endTime = document.getElementById("upd-attn-endtm").value;
         let type = (document.getElementById("upd-attn-single").checked)?"once":"cont";
-        let status = (document.getElementById("upd-attn-status").checked)?"true":"false";
         let resultLog = document.getElementById("upd-attn-rsltselect").value;
 
         /*send to server*/
@@ -29,7 +28,7 @@ function ModalUpdateAttn()
             attendance_strtm : startTime ,
             attendance_endtm : endTime ,
             attendance_rsltlog : resultLog ,
-            attendance_status : status ,
+            attendance_status : "false" ,
             staff_id : sessionStorage.getItem('staffId')         // dyn. fromo browser
         }
        // console.log(data)
@@ -88,11 +87,6 @@ function ModalUpdateAttn()
                     
                 </div>
             </div>
-            <br/>
-            <span>Status : <label className="switch">
-                    <input id="upd-attn-status" type="checkbox"/>
-                    <span className="slider round"></span>
-                    </label></span>
             <br/>
             <br/>
             <button type="submit" onClick={()=>updateAttendance()} id="=create-upd-atn-modal" className="btn btn-success" style={{marginRight:"15px"}}>Update</button>
@@ -191,6 +185,80 @@ function ModalAddNewAttn()
     </div>);
 }
 
+function LiveAtnList(props)
+{
+    let yes = <i className="material-icons" style={{color:"green"}}>check_circle</i>;
+    let no = <i className="material-icons" style={{color:"red"}}>dangerous</i>;
+    return(
+        <div>
+        <div className="row sgs-center" style={{backgroundColor:"black",padding:"5px"}}>
+            <div className="col-md-4">{props.data.register_no}</div>
+            <div className="col-md-4">{props.data.name}</div>
+            <div className="col-md-4">{(props.data.status==='present')?yes:no}</div>
+        </div>
+        </div>
+    )
+}
+
+class ModalViewLiveAttendance extends Component
+{   
+    constructor()
+    {
+        super();
+        this.state={data:JSON.parse(sessionStorage.getItem('live_atn_data'))}
+        setInterval(()=>{
+            this.setState({data:JSON.parse(sessionStorage.getItem('live_atn_data'))})
+        },1000)
+    }
+
+    render()
+    {
+        //console.log(this.state)
+        if(this.state.data)
+        return(
+            <div id="view-atn-modal" className="modal font-roboto">
+            <div className="modal-content">
+                <div className="modal-container sgs-center" style={{overflowY:"auto",overflowX:"hidden"}}>
+                  <div className="text-xl">View Attendance</div>
+                  <br/>
+                  <div id="view-atn-data">
+                     <div className="sgs center row" style={{backgroundColor:"blue",padding:'5px'} }>
+                        <div className="col-md-4">Register No</div>
+                        <div className="col-md-4">Name</div>
+                        <div className="col-md-4">Status</div>
+                    </div>
+                    {
+                            this.state.data.map((item,i)=>{
+                                return <LiveAtnList data={item} key={i}/>
+                             })
+                    }
+                  </div>
+                  </div>
+                  <div className="sgs-center">
+                    <button id="close-view-atn-modal"className="btn btn-danger">Close</button>
+                    </div>
+                </div> 
+            </div>
+            );
+        return(
+            <div id="view-atn-modal" className="modal font-roboto">
+            <div className="modal-content">
+                <div className="modal-container sgs-center">
+                  <div>View Attendance</div>
+                  <br/>
+                  <div id="view-atn-data"></div>
+                  </div>
+                  <div className="sgs-center">
+                    <button id="close-view-atn-modal"className="btn btn-danger">Close</button>
+                    </div>
+                </div> 
+            </div>
+            );
+    }
+   
+}
+
+
 class Dashboard extends Component{
     constructor(props)
     {
@@ -223,10 +291,18 @@ class Dashboard extends Component{
                 uspan.onclick = function() {
                 umodal.style.display = "none";
                 }
+
+                //view
+                var vmodal = document.getElementById("view-atn-modal");
+                var vspan = document.getElementById("close-view-atn-modal");
+                vspan.onclick = function() {
+                vmodal.style.display = "none";
+                }
                 window.onclick = function(event) {
-                if (event.target === umodal || event.target===modal) {
+                if (event.target === umodal || event.target===modal || event.target===vmodal) {
                     modal.style.display = "none";
                     umodal.style.display = "none";
+                    vmodal.style.display = "none";
                 }
                 }
             });
@@ -237,6 +313,7 @@ class Dashboard extends Component{
         </div>
         <ModalUpdateAttn/>
        <ModalAddNewAttn/>
+       <ModalViewLiveAttendance/>
         <div className="sgs-right">
             <button type="button" id="add-atn-modal-btn" className="btn btn-primary"><i className="bx bx-plus"></i>Add New</button>
         </div><br/>

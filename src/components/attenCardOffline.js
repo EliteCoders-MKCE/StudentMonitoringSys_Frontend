@@ -38,7 +38,6 @@ export default function CardOffline(props)
                         document.getElementById("upd-attn-endtm").value=data[0].end_time;
                         (data[0].type==="once")?document.getElementById("upd-attn-single").checked=true:document.getElementById("upd-attn-cont").checked=true;
                         document.getElementById("upd-attn-rsltselect").value=data[0].result_log;
-                        document.getElementById("upd-attn-status").checked=(data[0].status==="true")?true:false;
 
                     }
         }).fail(()=>{

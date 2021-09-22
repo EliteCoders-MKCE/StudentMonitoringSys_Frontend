@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
+import React, { Suspense, lazy } from 'react';
 import {Switch,Route } from "react-router-dom";
-import NoticeBoard from "../components/student/noticeBoard";
-import StudentDashboard from "../components/student/studentDashboard";
-import StudentProfile from "../components/student/studentProfile";
-import UnderConstruction from "../components/underConstruction";
 
+const StudentDashboard = lazy(() => import("../components/student/studentDashboard"));
+const NoticeBoard = lazy(() => import("../components/student/noticeBoard"));
+const StudentProfile = lazy(() => import("../components/student/studentProfile"));
+const UnderConstruction = lazy(() => import("../components/underConstruction"));
 
 export default function studentPortal()
 {
@@ -50,7 +51,7 @@ return(<div id="body-pd" className="bg-dark">
 <header className="header" id="header">
     <div className="header_toggle"> <i className='bx bx-menu' id="header-toggle"></i> </div>
     <div className="header_text text-white text-xl font-roboto"><h2>Student Portal</h2></div>
-    <div className="header_text text-white text-xl"><h2>III ECE A</h2></div>
+    <div className="header_text text-white text-xl"><h2>{sessionStorage.getItem('classGroup').replace(/-/g,' ')}</h2></div>
 </header>
 <div className="l-navbar" id="nav-bar">
     <nav className="nav">
@@ -67,10 +68,12 @@ return(<div id="body-pd" className="bg-dark">
 
 <div className="height-100 bg-dark cont-div">
   <Switch>
+  <Suspense fallback={<div>Loading...</div>}>
       <Route exact path="/student" component={StudentDashboard}></Route>
       <Route exact path="/student/me" component={StudentProfile}></Route>
       <Route exact path="/student/notice" component={NoticeBoard}></Route>
       <Route exact path="/student/stat" component={UnderConstruction}></Route>
+      </Suspense>
   </Switch>
 </div>
 </div>);

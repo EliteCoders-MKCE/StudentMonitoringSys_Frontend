@@ -3,6 +3,7 @@ import settings from '../settings.json';
 
 export default function CardOnline(props)
 {
+    let result_log = props.data.result_log;
     function changeStatusToFalse()
     {
         let classGroup = sessionStorage.getItem('classGroup').toLowerCase().replace(/-/g,'_');
@@ -36,12 +37,24 @@ export default function CardOnline(props)
                         document.getElementById("upd-attn-endtm").value=data[0].end_time;
                         (data[0].type==="once")?document.getElementById("upd-attn-single").checked=true:document.getElementById("upd-attn-cont").checked=true;
                         document.getElementById("upd-attn-rsltselect").value=data[0].result_log;
-                        document.getElementById("upd-attn-status").checked=(data[0].status==="true")?true:false;
 
                     }
         }).fail(()=>{
             alert('Request Failed');
         });
+    }
+
+    function viewModal()
+    {
+        // View Insert data here 
+       
+        $.get(settings.ip+'api/attn/get-liveatn?result_log='+result_log,(data,status)=>{
+            if(status==="success")
+                sessionStorage.setItem('live_atn_data',JSON.stringify(data));
+        }).fail(()=>{console.log('failed to load live data from API')});
+
+
+        document.getElementById("view-atn-modal").style.display = "block";
     }
 
  return(
@@ -61,7 +74,7 @@ export default function CardOnline(props)
                     <br/><p>&nbsp;&nbsp;&nbsp;&nbsp;{props.data.attendance_desc}</p>
                     <br/>
                     <div className="sgs-right">
-                        <button type="button" className="btn btn-success" style={{marginRight:"15px",marginBottom:"10px"}}><span className="material-icons small">view_list</span> View</button>
+                        <button type="button" onClick={()=>viewModal()} className="btn btn-success" style={{marginRight:"15px",marginBottom:"10px"}}><span className="material-icons small">view_list</span> View</button>
                         <button type="button" onClick={()=>insertDataToForm()} className="btn btn-light hover:bg-gray-200" style={{marginRight:"15px",marginBottom:"10px"}}><span className="material-icons small">settings</span> Edit</button>
                         <button type="button" onClick={()=>changeStatusToFalse()} className="btn btn-danger" style={{marginRight:"15px",marginBottom:"10px"}}><i className="bx bx-x"></i> Stop</button>
                     </div>
