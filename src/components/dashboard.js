@@ -209,6 +209,17 @@ class ModalViewLiveAttendance extends Component
         setInterval(()=>{
             this.setState({data:JSON.parse(sessionStorage.getItem('live_atn_data'))})
         },1000)
+        setInterval(()=>{
+            if(sessionStorage.getItem('live_result_log'))
+            {
+                let result_log = sessionStorage.getItem('live_result_log')
+                $.get(settings.ip+'api/attn/get-liveatn?result_log='+result_log,(data,status)=>{
+                    if(status==="success")
+                        sessionStorage.setItem('live_atn_data',JSON.stringify(data));
+                }).fail(()=>{console.log('failed to load live data from API')});
+            }
+        },10000)
+
     }
 
     render()
@@ -234,6 +245,7 @@ class ModalViewLiveAttendance extends Component
                     }
                   </div>
                   </div>
+                  <span style={{color:"gray"}}>* Updated automatically..</span>
                   <div className="sgs-center">
                     <button id="close-view-atn-modal"className="btn btn-danger">Close</button>
                     </div>

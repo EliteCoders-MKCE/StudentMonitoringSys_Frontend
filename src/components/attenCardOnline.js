@@ -47,7 +47,7 @@ export default function CardOnline(props)
     function viewModal()
     {
         // View Insert data here 
-       
+       sessionStorage.setItem('live_result_log',result_log);
         $.get(settings.ip+'api/attn/get-liveatn?result_log='+result_log,(data,status)=>{
             if(status==="success")
                 sessionStorage.setItem('live_atn_data',JSON.stringify(data));

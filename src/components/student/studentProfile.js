@@ -2,6 +2,55 @@ import profileImg from '../../assets/profile.png';
 import $ from 'jquery';
 import settings from '../../settings.json';
 
+
+function ChangePassword()
+{   
+    function Change()
+    {
+        let old  = document.getElementById("old-pass").value;
+        let newp  = document.getElementById("new-pass").value;
+        let conf  = document.getElementById("conf-pass").value;
+        let registerNo = sessionStorage.getItem('registerNo');
+        if(newp!==conf)
+        $.toaster('Password Mismatch..','', 'danger');
+        else if(newp==="")
+        $.toaster('Invalid input...','', 'danger');
+        else if(old===newp)
+        $.toaster('New password and old password cant be same','', 'danger');
+        else
+        {
+            $.post(settings.ip+'api/student/reset-pass?register_no='+registerNo+'&old_pass='+old+'&new_pass='+newp,(data,status)=>{
+                if(status==="success")
+                {
+                    $.toaster(data,'', 'success');
+                    setTimeout(()=>{window.location.reload();},2000);
+                }
+                
+            });
+        }
+    }
+    
+    return(
+    <div id="chg-pwd-modal" className="modal font-roboto">
+    <div className="modal-content">
+        <div className="modal-container sgs-center">
+            <div className="sgs-center">
+                <span className="text-xl">Change Password</span>
+            </div>
+            <br/>
+        <input type="password" placeholder="Old Password" id="old-pass" className="modal-input" required/><br/>
+        <input type="password" placeholder="New password" id="new-pass" className="modal-input" required/><br/>
+        <input type="password" placeholder="Confirm password" id="conf-pass" className="modal-input" required/><br/>
+            <br/>
+            <button type="submit" onClick={()=>Change()} className="btn btn-success" style={{marginRight:"15px"}}>Continue..</button>
+            <button id="close-chg-pwd-modal" className="btn btn-danger">Close</button><br/>
+        </div> 
+    </div>
+    </div>);
+}
+
+
+
 export default function StudentProfile()
 {
     $( document ).ready(function() {
@@ -14,6 +63,20 @@ export default function StudentProfile()
             document.getElementById("prof-mail").innerHTML=data[0].e_mail;
             document.getElementById("prof-class").innerHTML=data[0].dept_class;
         });
+        var modal = document.getElementById("chg-pwd-modal");
+        var btn = document.getElementById("open-chg-pwd");
+        var span = document.getElementById("close-chg-pwd-modal");
+        btn.onclick = function() {
+        modal.style.display = "block";
+        }
+        span.onclick = function() {
+        modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target===modal) {
+                modal.style.display = "none";
+            }
+            }
     });
     return(
         <div className="row dashboard-cont">
@@ -34,12 +97,9 @@ export default function StudentProfile()
     </div>
     <div className="col-md-2"></div>
     </div>
-   {/* <br/>
-    <input className="prof-input" placeholder="Enter Password" type="password"/><br/>
-    <input className="prof-input" placeholder="Confirm Password" type="password"/><br/>
-   <br/>*/}
+   {<ChangePassword/>}
    <br/>
-    <button className="btn btn-danger">Change Password</button>
+    <button id="open-chg-pwd" className="btn btn-danger">Change Password</button>
     </div>
     <div className="col-md-3"></div>
             </div>

@@ -5,7 +5,7 @@ import {Switch,Route } from "react-router-dom";
 const StudentDashboard = lazy(() => import("../components/student/studentDashboard"));
 const NoticeBoard = lazy(() => import("../components/student/noticeBoard"));
 const StudentProfile = lazy(() => import("../components/student/studentProfile"));
-const UnderConstruction = lazy(() => import("../components/underConstruction"));
+const StudentStat = lazy(() => import("../components/student/studentStats"));
 
 export default function studentPortal()
 {
@@ -72,7 +72,7 @@ return(<div id="body-pd" className="bg-dark">
       <Route exact path="/student" component={StudentDashboard}></Route>
       <Route exact path="/student/me" component={StudentProfile}></Route>
       <Route exact path="/student/notice" component={NoticeBoard}></Route>
-      <Route exact path="/student/stat" component={UnderConstruction}></Route>
+      <Route exact path="/student/stat" component={StudentStat}></Route>
       </Suspense>
   </Switch>
 </div>

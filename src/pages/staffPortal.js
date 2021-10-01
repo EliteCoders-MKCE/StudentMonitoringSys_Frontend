@@ -6,7 +6,7 @@ import settings from "../settings.json";
 
 const Dashboard = lazy(() => import("../components/dashboard"));
 const StudentDetails = lazy(() => import("../components/studentDetails"));
-const UnderConstruction = lazy(() => import("../components/underConstruction"));
+const FacultyStats = lazy(() => import("../components/facultyStats"));
 const AttendanceLog = lazy(() => import("../components/attendanceLog"));
 const FacultyChat = lazy(() => import("../components/facultychat"));
 
@@ -82,7 +82,7 @@ export default function staffPortal()
           <Route exact path="/faculty" component={Dashboard}></Route>
           <Route exact path="/faculty/student" component={StudentDetails}></Route>
           <Route exact path="/faculty/log" component={AttendanceLog}></Route>
-          <Route exact path="/faculty/stats" component={UnderConstruction}></Route>
+          <Route exact path="/faculty/stats" component={FacultyStats}></Route>
           <Route exact path="/faculty/chat" component={FacultyChat}></Route>
         </Suspense>
       </Switch>
