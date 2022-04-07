@@ -6,6 +6,7 @@ import settings from "../settings.json";
 
 const Dashboard = lazy(() => import("../components/dashboard"));
 const StudentDetails = lazy(() => import("../components/studentDetails"));
+const Meet = lazy(() => import("../components/meet"));
 const FacultyStats = lazy(() => import("../components/facultyStats"));
 const AttendanceLog = lazy(() => import("../components/attendanceLog"));
 const FacultyChat = lazy(() => import("../components/facultychat"));
@@ -66,6 +67,7 @@ export default function staffPortal()
             <div> <a href="/faculty" className="nav_logo"> <i className='bx bx-layer nav_logo-icon'></i> <span className="nav_logo-name font-roboto"><b>{sessionStorage.getItem('staffName')}</b></span> </a>
                 <div className="nav_list">
                      <Link to="/faculty" className="nav_link active"> <i className='bx bx-grid-alt nav_icon'></i> <span className="nav_name">Dashboard</span> </Link> 
+                     <Link to="/faculty/meet" className="nav_link"> <i className='bx bx-sidebar nav_icon'></i> <span className="nav_name">Online Meets</span> </Link>
                      <Link to="/faculty/student" className="nav_link"> <i className='bx bx-user nav_icon'></i> <span className="nav_name">Students</span> </Link>
                  {/*<Link to="/faculty" className="nav_link"> <i className='bx bx-bookmark nav_icon'></i> <span className="nav_name">Bookmark</span> </Link>*/}
                  <Link to="/faculty/chat" className="nav_link"> <i className='bx bx-message-alt-detail nav_icon'></i> <span className="nav_name">NoticeBoard</span> </Link>
@@ -76,10 +78,11 @@ export default function staffPortal()
         </nav>
     </div>
    
-    <div className="height-100 bg-dark cont-div">
+    <div /*className="height-100 cont-div"*/ className="height-100 bg-dark cont-div">
       <Switch>
         <Suspense fallback={<div>Loading...</div>}>
           <Route exact path="/faculty" component={Dashboard}></Route>
+          <Route exact path="/faculty/meet" component={Meet}></Route>
           <Route exact path="/faculty/student" component={StudentDetails}></Route>
           <Route exact path="/faculty/log" component={AttendanceLog}></Route>
           <Route exact path="/faculty/stats" component={FacultyStats}></Route>

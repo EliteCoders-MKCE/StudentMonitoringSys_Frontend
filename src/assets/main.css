@@ -187,6 +187,9 @@ a {
 /*START OF MINI SCREEN*/
 @media screen and (max-width: 767px)
 {
+.meet-list button {
+    margin-top: 10px;
+}
 .modal-content{width: 90% !important;}
 #canvas
 {
@@ -473,4 +476,16 @@ a {
 background-color:black;
 width: 70%;
 color: turquoise;
+}
+.meet-create-div{
+    padding:15px;
+    border:2px solid gray;
+    border-radius:5px;
+    margin-top: 8px;
+}
+.meet-list{
+    border: 1px solid rgb(0, 98, 128);
+    border-radius: 5px;
+    margin:5px;
+    padding:5px;
 }

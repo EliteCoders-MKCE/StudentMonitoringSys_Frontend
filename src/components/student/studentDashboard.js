@@ -5,6 +5,7 @@ import StdCardOffline from "./stdAttnNotDone";
 import mkce from '../../assets/MKCE_Logo_SGS.png';
 import '../../assets/jquery.toaster';
 import settings from '../../settings.json';
+import StudentMeet from "./studentMeet";
 
 require('@tensorflow/tfjs-core')
 require('@tensorflow/tfjs-converter')
@@ -437,20 +438,36 @@ class StudentDashboard extends Component{
                      return (<StdCardOffline key={i} data={item}/>)
                 });
             }
-        return(<div className="dashboard-cont ">
+        return(<div className="dashboard-cont">
         <div>
             <span className="text-2xl">Dashboard</span>
         </div>
       {<ModalOpenAttnCont/>}
       {<ModalOpenAttnOnce/>}
         <br/>
-        <div className="row font-roboto">
+        <div className="row">
+          <div className="col-md-4 col-sm-12">
+            <StudentMeet/>
+          </div>
+          <div className="col-md-8 col-sm-12 meet-create-div">
+          <div className="sgs-center">
+            <span className="text-xl">Available Attendance</span>
+        </div>
+        <br/>
+          <div className="row font-roboto">
            {main}
+        </div>
+          </div>
         </div>
     </div>)
         }
     else
-    return(<>Loading...</>)
+    return<>
+    <div class="text-center">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div></>
        
     }
 }
