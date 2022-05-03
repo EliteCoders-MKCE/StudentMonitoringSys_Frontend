@@ -54,7 +54,7 @@ export default function CardOnline(props)
         }).fail(()=>{console.log('failed to load live data from API')});
 
 
-        document.getElementById("view-atn-modal").style.display = "block";
+        document.getElementById("view-atn-modal").style.display="block";
     }
 
  return(

@@ -4,6 +4,7 @@ import StudentLogin from './pages/studentLogin';
 import staffLogin from './pages/staffLogin';
 import studentPortal from './pages/studentPortal';
 import staffPortal from './pages/staffPortal';
+import AdminDashboard from './components/admin/adminDashboard';
 
 function App()
 {
@@ -14,6 +15,7 @@ function App()
     <Route exact path="/faculty" component={staffPortal}/>
     <Route exact path="/faculty/:tab" component={staffPortal}/>
     <Route exact path="/student" component={studentPortal}/>
+    <Route exact path="/admin" component={AdminDashboard}/>
     <Route exact path="/student/:tab" component={studentPortal}/>
   </Switch>);
 }

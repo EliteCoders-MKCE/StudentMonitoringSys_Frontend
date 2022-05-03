@@ -247,7 +247,7 @@ class ModalViewLiveAttendance extends Component
                   </div>
                   <span style={{color:"gray"}}>* Updated automatically..</span>
                   <div className="sgs-center">
-                    <button id="close-view-atn-modal"className="btn btn-danger">Close</button>
+                    <button onClick={()=>document.getElementById("view-atn-modal").style.display="none"} id="close-view-atn-modal" className="btn btn-danger">Close</button>
                     </div>
                 </div> 
             </div>
